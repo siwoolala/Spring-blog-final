@@ -1,5 +1,6 @@
-package com.cos.blog.config;
+package com.cos.blog.config.auth;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -9,8 +10,13 @@ import com.cos.blog.model.User;
 
 // 
 public class PrincipalDetail implements UserDetails{
+	
 	private User user;
 
+	public PrincipalDetail(User user) {
+		this.user = user;
+	}
+	
 	@Override
 	public String getPassword() {
 		return user.getPassword();
@@ -21,6 +27,7 @@ public class PrincipalDetail implements UserDetails{
 		return user.getUsername();
 	}
 
+	// 계정이 만료되지 않았는지 리턴한다. (true : 만료안됨)
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
@@ -45,10 +52,14 @@ public class PrincipalDetail implements UserDetails{
 		return true;
 	}
 
-	// 
+	// 계정이 갖고 있는 권한 목록을 리턴한다. (권한이 여러개 있을 수 잇어서 루프를 돌아야 하는데 우리는 한개만)
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+
+		Collection<GrantedAuthority> collectors = new ArrayList<>();
+		collectors.add(()->{	return "ROLE_" + user.getRole();}); 
+		
+		return collectors;
 	}
 	
 }
