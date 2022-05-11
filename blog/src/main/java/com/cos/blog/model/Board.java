@@ -39,8 +39,7 @@ public class Board {
 	@Lob
 	private String content;
 	
-	@ColumnDefault("0") // 양 옆으로 작은 따옴표를 줘서 문자라는 것을 알려줘야함
-	private String count; // Enum을 쓰는게 좋다. // admin, user, manager -> 도메인(프로그래밍에서 도메인은 범위를 의미)
+	private int count; // Enum을 쓰는게 좋다. // admin, user, manager -> 도메인(프로그래밍에서 도메인은 범위를 의미)
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="userId")
